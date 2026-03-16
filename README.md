@@ -70,20 +70,27 @@ When it finishes, open **http://\<your-pi-ip\>:8000** in a browser. Use **Settin
 
 ## Quick start (development)
 
-**Backend**
-```bash
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-# API at http://localhost:8000
-```
+**No Docker needed** – everything runs locally (SQLite for storage; Modbus only talks to inverters when you configure one).
 
-**Frontend** (from repo root)
+**One command** (from repo root):
 ```bash
-cd frontend && npm install && npm run dev
-# Dashboard at http://localhost:5173 (proxies /api to backend)
+./scripts/dev.sh
 ```
+Then open **http://localhost:5173**. The script starts the backend (port 8000) and frontend (port 5173); the frontend proxies `/api` to the backend. Stop with Ctrl+C.
+
+**Seed fake history data** (for charts and storage UI without an inverter):
+```bash
+./scripts/seed_fake_data.sh
+```
+Adds 24 hours of fake samples (5‑min interval). Optional: `SEED_HOURS=48 SEED_INTERVAL_MIN=2 ./scripts/seed_fake_data.sh`
+
+**Or run backend and frontend separately** (two terminals):
+
+| Terminal 1 – backend | Terminal 2 – frontend |
+|----------------------|------------------------|
+| `python3 -m venv .venv && source .venv/bin/activate` | `cd frontend && npm install && npm run dev` |
+| `pip install -r requirements.txt` | |
+| `uvicorn app.main:app --reload` | Open http://localhost:5173 |
 
 **Production (single device)**  
 Build the frontend (`cd frontend && npm run build`), then serve `frontend/dist` with the same FastAPI app (uncomment the `StaticFiles` mount in `app/main.py`) or put the backend and frontend behind nginx.
