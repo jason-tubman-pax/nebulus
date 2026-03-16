@@ -36,9 +36,13 @@ export interface PersistenceConfig {
   keep_days?: number;
 }
 
+export type SceneBuildingType = "house" | "commercial" | "farm";
+
 export interface SystemConfig {
   inverter: InverterConnectionConfig;
   persistence?: PersistenceConfig;
+  scene_building_type?: SceneBuildingType;
+  scene_off_grid?: boolean;
   share_token?: string;
   hostname?: string;
 }

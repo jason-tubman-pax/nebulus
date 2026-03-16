@@ -83,5 +83,8 @@ class SystemConfig(BaseModel):
     inverter: InverterConnectionConfig = Field(default_factory=InverterConnectionConfig)
     inverter_settings: InverterSettings = Field(default_factory=InverterSettings)
     persistence: PersistenceConfig = Field(default_factory=PersistenceConfig)
+    # 3D dashboard scene
+    scene_building_type: Literal["house", "commercial", "farm"] = "house"
+    scene_off_grid: bool = False  # show generator instead of grid
     share_token: Optional[str] = None
     hostname: Optional[str] = None

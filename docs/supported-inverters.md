@@ -24,4 +24,4 @@ Pax Nebulus uses pluggable Modbus drivers. The goal is **feature parity with Sol
 - **Fronius** – Primo, Symo (Modbus)
 - **Delta** – RPS (Modbus)
 
-Register maps come from manufacturer manuals, Solar Assistant open references, and community projects (e.g. sunsynk-python, deye-inverter). Add a new file under `app/drivers/` implementing `BaseInverterDriver` and register it in `app/drivers/registry.py`.
+Register maps are defined in each driver file and documented in [modbus-register-maps.md](modbus-register-maps.md). Sources: manufacturer manuals, [Sunsynk definitions](https://kellerza.github.io/sunsynk/reference/definitions) (Deye/Sunsynk), and community projects. Add a new file under `app/drivers/` implementing `BaseInverterDriver` and register it in `app/drivers/registry.py`.

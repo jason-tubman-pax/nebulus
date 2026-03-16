@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { useLiveData } from "../hooks/useLiveData";
+import EnergyScene from "../components/EnergyScene";
+import type { SceneBuildingType } from "../types";
 
 function Card({
   title,
@@ -40,6 +43,18 @@ function Card({
 
 export default function Dashboard() {
   const { data, connected } = useLiveData();
+  const [buildingType, setBuildingType] = useState<SceneBuildingType>("house");
+  const [offGrid, setOffGrid] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/config")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((cfg: { scene_building_type?: SceneBuildingType; scene_off_grid?: boolean } | null) => {
+        if (cfg?.scene_building_type) setBuildingType(cfg.scene_building_type);
+        if (cfg?.scene_off_grid != null) setOffGrid(cfg.scene_off_grid);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div>
@@ -67,6 +82,14 @@ export default function Dashboard() {
           Waiting for inverter data. Check connection and settings.
         </p>
       )}
+
+      <div style={{ marginBottom: "1rem" }}>
+        <EnergyScene
+          data={data}
+          buildingType={buildingType}
+          offGrid={offGrid}
+        />
+      </div>
 
       {data && (
         <div

@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/components/energyscene.tsx","./src/components/layout.tsx","./src/hooks/uselivedata.ts","./src/pages/dashboard.tsx","./src/pages/settings.tsx","./src/pages/sharedashboard.tsx"],"version":"5.9.3"}

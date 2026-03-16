@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { SystemConfig, TunnelState, WifiNetwork, StorageInfo, PersistenceConfig } from "../types";
+import type { SystemConfig, TunnelState, WifiNetwork, StorageInfo, SceneBuildingType } from "../types";
 
 const API = "/api";
 
@@ -144,6 +144,62 @@ export default function Settings() {
               }
             />
           )}
+        </div>
+        <button
+          type="button"
+          onClick={() =>
+            fetch(`${API}/config`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(config),
+            })
+          }
+          style={{ marginTop: "0.75rem" }}
+        >
+          Save
+        </button>
+      </section>
+
+      <section
+        style={{
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
+          padding: "1.25rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <h2 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>3D dashboard scene</h2>
+        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "0.75rem" }}>
+          Building type and grid display in the energy flow diagram.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", alignItems: "center" }}>
+          <label>
+            Building:{" "}
+            <select
+              value={config.scene_building_type ?? "house"}
+              onChange={(e) =>
+                setConfig({
+                  ...config,
+                  scene_building_type: e.target.value as SceneBuildingType,
+                })
+              }
+            >
+              <option value="house">House (roof solar)</option>
+              <option value="commercial">Commercial (building + solar)</option>
+              <option value="farm">Farm (barn, animals, ground solar)</option>
+            </select>
+          </label>
+          <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <input
+              type="checkbox"
+              checked={config.scene_off_grid ?? false}
+              onChange={(e) =>
+                setConfig({ ...config, scene_off_grid: e.target.checked })
+              }
+            />
+            Off-grid (show generator instead of grid)
+          </label>
         </div>
         <button
           type="button"
