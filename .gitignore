@@ -1,4 +1,5 @@
 # Python
+*.cpython*
 *.pyc
 *.pyc*
 .venv/

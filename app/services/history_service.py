@@ -130,6 +130,35 @@ async def get_storage_info() -> dict:
     }
 
 
+async def get_latest_sample() -> Optional[LiveData]:
+    """Return the most recent sample as LiveData, for display when no inverter is connected."""
+    async with async_session_factory() as session:
+        result = await session.execute(
+            select(Sample).order_by(Sample.timestamp_utc.desc()).limit(1)
+        )
+        row = result.scalars().first()
+    if not row:
+        return None
+    return LiveData(
+        timestamp=row.timestamp_utc,
+        pv_power_w=row.pv_power_w,
+        pv_voltage_v=row.pv_voltage_v,
+        pv_current_a=row.pv_current_a,
+        battery_soc_percent=row.battery_soc_percent,
+        battery_power_w=row.battery_power_w,
+        battery_voltage_v=row.battery_voltage_v,
+        battery_current_a=row.battery_current_a,
+        battery_temperature_c=row.battery_temperature_c,
+        grid_power_w=row.grid_power_w,
+        grid_voltage_v=row.grid_voltage_v,
+        grid_frequency_hz=row.grid_frequency_hz,
+        load_power_w=row.load_power_w,
+        inverter_temperature_c=row.inverter_temperature_c,
+        status_message=row.status_message or "",
+        mode=row.mode or "",
+    )
+
+
 async def get_history(
     from_ts: Optional[datetime] = None,
     to_ts: Optional[datetime] = None,
