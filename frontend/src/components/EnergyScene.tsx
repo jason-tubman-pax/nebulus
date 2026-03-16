@@ -140,7 +140,7 @@ function GridPoles({ position }: { position: Vec3 }) {
   );
 }
 
-function GeneratorNode({ position }: { position: Vec3 }) {
+function GeneratorNode({ position, powerW }: { position: Vec3; powerW: number }) {
   return (
     <group position={position}>
       <mesh position={[0, 0.2, 0]} castShadow>
@@ -151,6 +151,7 @@ function GeneratorNode({ position }: { position: Vec3 }) {
         <cylinderGeometry args={[0.08, 0.08, 0.12, 12]} />
         <meshStandardMaterial color="#6b7280" />
       </mesh>
+      <ValueLabel color="#94a3b8" text={`Gen ${Math.round(powerW)} W`} />
     </group>
   );
 }
@@ -295,16 +296,12 @@ function Scene({
       <SolarNode position={solar} powerW={pvW} buildingType={buildingType} />
       <BatteryNode position={battery} soc={soc} />
       {offGrid ? (
-        <GeneratorNode position={gridOrGen} />
+        <GeneratorNode position={gridOrGen} powerW={gridW} />
       ) : (
-        <GridPoles position={gridOrGen} />
-      )}
-      {!offGrid && (
-        <Html position={gridOrGen} center style={{ pointerEvents: "none", transform: "translateY(0.6rem)" }}>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#60a5fa" }}>
-            Grid {Math.round(gridW)} W
-          </span>
-        </Html>
+        <group position={gridOrGen}>
+          <GridPoles position={[0, 0, 0]} />
+          <ValueLabel color="#60a5fa" text={`Grid ${Math.round(gridW)} W`} />
+        </group>
       )}
       <LoadNode position={load} powerW={loadW} />
 
