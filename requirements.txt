@@ -1,0 +1,21 @@
+# Pax Nebulus - backend dependencies
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Modbus
+pymodbus>=3.6.0
+
+# Serial for Modbus RTU
+pyserial>=3.5
+
+# WebSocket / async
+websockets>=12.0
+
+# Persistence (dashboard history)
+sqlalchemy[asyncio]>=2.0.0
+aiosqlite>=0.19.0
+
+# Env and config
+python-dotenv>=1.0.0
